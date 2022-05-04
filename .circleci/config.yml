@@ -85,7 +85,7 @@ jobs:
             sudo mv /tmp/eksctl /usr/local/bin
             eksctl version
             aws --version
-            kubectl version --short
+            kubectl version --short --client
       - run:
           name: Build EKS Cluster
           command: |
