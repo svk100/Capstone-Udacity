@@ -100,7 +100,7 @@ jobs:
             cat /home/circleci/.kube/config
             sed -i_bak -e 's/v1alpha1/v1beta1/' /home/circleci/.kube/config
             cat /home/circleci/.kube/config
-            kubectl get svc
+            #kubectl get svc
             kubectl get nodes
             #kubectl apply -f eksConfig/LBConfig.yml
             #kubectl apply -f eksConfig/deployment.yml
