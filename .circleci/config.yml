@@ -73,7 +73,7 @@ jobs:
 
   build-eks-cluster:
     docker:
-      - image: image: circleci/node:13.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - kubernetes/install-kubectl
