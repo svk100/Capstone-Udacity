@@ -88,7 +88,7 @@ workflows:
     jobs:
       - build-docker-image
  
-   build-eks-workflow:
+  build-eks-workflow:
     when: << pipeline.parameters.build-eks >>
     jobs:
       - build-eks-cluster
