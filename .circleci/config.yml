@@ -18,6 +18,9 @@ parameters:
   test_deployment:
     type: boolean
     default: false
+  blue_BD:
+    type: boolean
+    default: false
 
 jobs:
 
@@ -74,6 +77,59 @@ jobs:
             docker container ls
             docker push svk100/greenapp
 
+  build-dockerB-image:
+    docker:
+      - image: cimg/python:3.10.4
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+
+      - run:
+          name: install dependencies
+          command: |
+            cd BlueApp
+            python3 -m venv venv
+            . venv/bin/activate
+            make install
+            # Install hadolint
+            sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+            sudo chmod +x /bin/hadolint
+      - run:
+          name: run lint
+          command: |
+            cd BlueApp
+            . venv/bin/activate
+            make lint
+      - run:
+          name: create docker image
+          command: |
+            docker container ls
+            cd BlueApp
+            docker build -t blueapp .
+            docker image ls
+      - run:
+          name: test docker image
+          command: |
+            cd BlueApp
+            docker run -d -p 8000:80 blueapp
+            if docker ps | grep 'blueapp'
+            then
+              echo 'Docker works fine'
+            else
+              echo 'Docker test failed'
+              exit 1
+            fi
+      - run:
+          name: upload docker image
+          command: |
+            cd BlueApp
+            echo $docker_password | docker login -u $docker_username --password-stdin 
+            docker tag blueapp svk100/blueapp
+            docker container ls
+            docker push svk100/blueapp
+
   build-eks-cluster:
     docker:
       - image: circleci/node:13.8.0
@@ -106,10 +162,45 @@ jobs:
             kubectl apply -f eksConfig/LBConfig.yml
             kubectl apply -f eksConfig/deployment.yml
 
+  update-eks-cluster:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - aws-cli/setup
+      - run:
+          name: Install eksctl and kubectl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin
+            sudo mv /tmp/eksctl /usr/local/bin
+            chmod +x /usr/local/bin/kubectl
+            eksctl version
+            aws --version
+            kubectl version --short --client
+      - run:
+          name: Update EKS Cluster
+          command: |
+            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
+
   test-deployment:
     docker: 
       - image: circleci/node:13.8.0
     steps:
+      - aws-cli/setup
+      - run:
+          name: Install eksctl and kubectl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin
+            sudo mv /tmp/eksctl /usr/local/bin
+            chmod +x /usr/local/bin/kubectl
+            eksctl version
+            aws --version
+            kubectl version --short --client
       - run:
           name: Test deployment
           command: |
@@ -120,7 +211,12 @@ jobs:
               echo 'Deployment Failed'
               exit 1
             fi
-    
+            aws eks --region us-east-2 update-kubeconfig --name udacity-devops-capstone
+            kubectl get svc
+            kubectl get nodes
+            kubectl get deployment
+            kubectl get pod
+
 workflows:
   build-workflow:
     when: << pipeline.parameters.build >>
@@ -136,3 +232,9 @@ workflows:
     when: << pipeline.parameters.test_deployment >>
     jobs:
       - test-deployment
+
+  Build-Deploy-Blue-workflow:
+    when: << pipeline.parameters.blue_BD >>
+    jobs:
+      - build-dockerB-image
+      
