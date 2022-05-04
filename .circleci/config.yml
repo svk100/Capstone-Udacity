@@ -56,7 +56,7 @@ jobs:
           command: |
             cd GreenApp
             docker run -d -p 8000:80 greenapp
-            if curl http://localhost:8000 | grep 'This'
+            if docker ps | grep 'greenapp'
             then
               echo 'Docker works fine'
             else
