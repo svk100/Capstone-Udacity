@@ -204,7 +204,7 @@ jobs:
       - run:
           name: Test Cluster
           command: |
-            aws eks --region us-east-2 update-kubeconfig --name udacity-devops-capstone
+            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
             kubectl get svc
             kubectl get nodes
             kubectl get deployment
