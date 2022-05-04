@@ -68,6 +68,7 @@ jobs:
           command: |
             cd GreenApp
             docker login -u $docker_username -p $docker_password 
+            docker tag greenapp svk100/greenapp
             docker container ls
             docker push svk100/greenapp
             
