@@ -18,16 +18,22 @@ jobs:
   build-docker-image:
     docker:
       - image: python:3.7.3-stretch
-    executor:
-      name: docker/docker
-      tag: "latest"
+#    executor:
+#      name: docker/docker
+#      tag: "latest"
     steps:
       - checkout
-      - docker/install-docker-tools
+#      - docker/install-docker-tools
 #      - setup_remote_docker:
 #          version: 20.10.14
 #          docker_layer_caching: true
 
+      - run:
+          name: install docker
+          command: |
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+            docker --version
       - run:
           name: install dependencies
           command: |
