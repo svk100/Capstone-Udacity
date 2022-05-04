@@ -89,7 +89,13 @@ jobs:
       - run:
           name: Build EKS Cluster
           command: |
-            eksctl create cluster --name udacity-capstone --version 1.22 --region us-east-1 --node-type t2.micro --nodes-min 2 --nodes-max 2 --dry-run
+            eksctl create cluster --name udacity-capstone --version 1.22 --region us-east-1 --node-type t2.micro --nodes-min 2 --nodes-max 2 # --dry-run
+      - run:
+          name: Deploy to EKS
+          command: |
+            aws eks --region us-east-1 update-kubeconfig --name udacity-capstone
+            kubectl apply -f eksConfig/LBConfig.yml
+            kubectl apply -f eksConfig/deployment.yml
   
 workflows:
   build-workflow:
