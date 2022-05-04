@@ -76,9 +76,16 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install ekstcl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
+            aws --version
+            #kubectl version --short --client
+      - run:
           name: Build EKS Cluster
           command: |
-            eksctl version
             kubectl version
             #eksctl create cluster --name udacity-capstone --version 1.18 --region us-east-1 --nodegroup-name standard-workers --node-type t2.micro --nodes 1 --nodes-min 1 --nodes-max 2
   
