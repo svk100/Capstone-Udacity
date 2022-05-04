@@ -21,11 +21,8 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+          docker_layer_caching: true
+
       - run:
           name: install dependencies
           command: |
@@ -45,6 +42,7 @@ jobs:
       - run:
           name: create docker image
           command: |
+            docker container ls
             cd GreenApp
             docker build -t greenapp .
             docker image ls
@@ -60,7 +58,6 @@ jobs:
               echo 'Docker test failed'
               exit 1
             fi
-            
       - run:
           name: upload docker image
           command: |
@@ -69,11 +66,6 @@ jobs:
             docker container ls
             docker push svk100/greenapp
             
-      - save_cache:
-          paths:
-          - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-
 
 
   build-job:
