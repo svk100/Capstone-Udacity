@@ -89,8 +89,7 @@ jobs:
       - run:
           name: Build EKS Cluster
           command: |
-            kubectl version
-            #eksctl create cluster --name udacity-capstone --version 1.18 --region us-east-1 --nodegroup-name standard-workers --node-type t2.micro --nodes 1 --nodes-min 1 --nodes-max 2
+            eksctl create cluster --name udacity-capstone --version 1.18 --region us-east-1 --node-type t2.micro --ssh-access false --nodes 1 --nodes-min 2 --nodes-max 2 --dry-run
   
 workflows:
   build-workflow:
