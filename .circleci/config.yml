@@ -76,7 +76,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - kubernetes/install-kubectl
+      #- kubernetes/install-kubectl
       - aws-cli/setup
       - run:
           name: Install ekstcl
@@ -97,17 +97,11 @@ jobs:
       - run:
           name: Deploy to EKS
           command: |
-            #aws configure set default.region ${AWS_DEFAULT_REGION}
-            #aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
-            #aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
             aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
             cat /home/circleci/.kube/config
-            #sed -i_bak -e 's/v1alpha1/v1beta1/' /home/circleci/.kube/config
-            #cat /home/circleci/.kube/config
-            #kubectl get svc
-            kubectl get nodes
-            #kubectl apply -f eksConfig/LBConfig.yml
-            #kubectl apply -f eksConfig/deployment.yml
+            #kubectl get nodes
+            kubectl apply -f eksConfig/LBConfig.yml
+            kubectl apply -f eksConfig/deployment.yml
   
 workflows:
   build-workflow:
