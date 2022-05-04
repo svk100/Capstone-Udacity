@@ -107,7 +107,8 @@ jobs:
             kubectl apply -f eksConfig/deployment.yml
 
   test-deployment:
-    docker: circleci/node:13.8.0
+    docker: 
+      - circleci/node:13.8.0
     steps:
       - run:
           name: Test deployment
