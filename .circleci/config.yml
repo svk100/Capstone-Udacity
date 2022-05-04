@@ -85,7 +85,7 @@ jobs:
             sudo mv /tmp/eksctl /usr/local/bin
             eksctl version
             aws --version
-            kubectl version --short --client
+            kubectl version --short
       - run:
           name: Build EKS Cluster
           command: |
@@ -94,6 +94,7 @@ jobs:
           name: Deploy to EKS
           command: |
             aws eks --region us-east-1 update-kubeconfig --name udacity-capstone
+            sed -i .bak -e 's/v1alpha1/v1beta1/' ~/.kube/config
             kubectl apply -f eksConfig/LBConfig.yml
             kubectl apply -f eksConfig/deployment.yml
   
