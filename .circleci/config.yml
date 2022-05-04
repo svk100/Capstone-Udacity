@@ -202,6 +202,15 @@ jobs:
             aws --version
             kubectl version --short --client
       - run:
+          name: Test Cluster
+          command: |
+            aws eks --region us-east-2 update-kubeconfig --name udacity-devops-capstone
+            kubectl get svc
+            kubectl get nodes
+            kubectl get deployment
+            kubectl get pod
+
+      - run:
           name: Test deployment
           command: |
             if curl -s http://ad2ba3d2bfd9042899744f3bf32f224b-1144593518.us-east-1.elb.amazonaws.com/ | grep 'This'
@@ -211,11 +220,6 @@ jobs:
               echo 'Deployment Failed'
               exit 1
             fi
-            aws eks --region us-east-2 update-kubeconfig --name udacity-devops-capstone
-            kubectl get svc
-            kubectl get nodes
-            kubectl get deployment
-            kubectl get pod
 
 workflows:
   build-workflow:
