@@ -20,7 +20,7 @@ jobs:
       - image: python:3.7.3-stretch
     executor:
       name: docker/docker
-      tag: "20.10.14"
+      tag: "latest"
     steps:
       - checkout
       - docker/install-docker-tools
