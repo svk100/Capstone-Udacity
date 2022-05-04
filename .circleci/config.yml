@@ -81,15 +81,6 @@ jobs:
             eksctl version
             kubectl version
             #eksctl create cluster --name udacity-capstone --version 1.18 --region us-east-1 --nodegroup-name standard-workers --node-type t2.micro --nodes 1 --nodes-min 1 --nodes-max 2
-
-  update-job:
-    docker:
-      - image: cimg/base:2021.04
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: echo 'update'
   
 workflows:
   build-workflow:
@@ -102,7 +93,3 @@ workflows:
     jobs:
       - build-eks-cluster
 
-  update-workflow:
-    when: << pipeline.parameters.update >>
-    jobs:
-      - update-job
