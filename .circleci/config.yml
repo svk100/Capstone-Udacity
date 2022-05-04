@@ -97,7 +97,7 @@ workflows:
   build-workflow:
     when: << pipeline.parameters.build >>
     jobs:
-      - build-job
+      - build-docker-image
  
   update-workflow:
     when: << pipeline.parameters.update >>
