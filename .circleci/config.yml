@@ -166,6 +166,7 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
+      - checkout
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
@@ -188,7 +189,8 @@ jobs:
             aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
             docker pull svk100/blueapp:latest
             docker image ls
-            kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp:latest
+            #kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp:latest
+            kubectl apply -f eksConfig/update.yml
             kubectl rollout status deployment/udacity-capstone
             kubectl rollout history deployment/udacity-capstone
             kubectl get rs
