@@ -49,6 +49,7 @@ jobs:
             cd GreenApp
             . venv/bin/activate
             make lint
+            hadolint -V Dockerfile
       - run:
           name: create docker image
           command: |
@@ -56,26 +57,26 @@ jobs:
             cd GreenApp
             docker build -t greenapp .
             docker image ls
-      - run:
-          name: test docker image
-          command: |
-            cd GreenApp
-            docker run -d -p 8000:80 greenapp
-            if docker ps | grep 'greenapp'
-            then
-              echo 'Docker works fine'
-            else
-              echo 'Docker test failed'
-              exit 1
-            fi
-      - run:
-          name: upload docker image
-          command: |
-            cd GreenApp
-            echo $docker_password | docker login -u $docker_username --password-stdin 
-            docker tag greenapp svk100/greenapp
-            docker container ls
-            docker push svk100/greenapp
+      # - run:
+          # name: test docker image
+          # command: |
+            # cd GreenApp
+            # docker run -d -p 8000:80 greenapp
+            # if docker ps | grep 'greenapp'
+            # then
+              # echo 'Docker works fine'
+            # else
+              # echo 'Docker test failed'
+              # exit 1
+            # fi
+      # - run:
+          # name: upload docker image
+          # command: |
+            # cd GreenApp
+            # echo $docker_password | docker login -u $docker_username --password-stdin 
+            # docker tag greenapp svk100/greenapp
+            # docker container ls
+            # docker push svk100/greenapp
 
   build-dockerB-image:
     docker:
@@ -102,6 +103,7 @@ jobs:
             cd BlueApp
             . venv/bin/activate
             make lint
+            hadolint -V Dockerfile
             # exit 1
       - run:
           name: create docker image
