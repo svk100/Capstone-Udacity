@@ -18,7 +18,7 @@ In this project you will apply the skills and knowledge which were developed thr
 * I'll be updating the docker image to blueapp using rolling deployment
 * I've highlighted the loadbalancer url in the screenshots to show the same cluster getting updated to a new image
 	Screenshots 
-	[4.3](Screenshots/4.3 LoadBalancer_Created.JPG)
+	![4.3](Screenshots/4.3 LoadBalancer_Created.JPG)
 		, 5.3 and 7.3
 
 ## Requirements
