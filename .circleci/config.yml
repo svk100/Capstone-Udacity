@@ -102,33 +102,33 @@ jobs:
             cd BlueApp
             . venv/bin/activate
             make lint
-      - run:
-          name: create docker image
-          command: |
-            docker container ls
-            cd BlueApp
-            docker build -t blueapp .
-            docker image ls
-      - run:
-          name: test docker image
-          command: |
-            cd BlueApp
-            docker run -d -p 8000:80 blueapp
-            if docker ps | grep 'blueapp'
-            then
-              echo 'Docker works fine'
-            else
-              echo 'Docker test failed'
-              exit 1
-            fi
-      - run:
-          name: upload docker image
-          command: |
-            cd BlueApp
-            echo $docker_password | docker login -u $docker_username --password-stdin 
-            docker tag blueapp svk100/blueapp
-            docker container ls
-            docker push svk100/blueapp
+      # - run:
+          # name: create docker image
+          # command: |
+            # docker container ls
+            # cd BlueApp
+            # docker build -t blueapp .
+            # docker image ls
+      # - run:
+          # name: test docker image
+          # command: |
+            # cd BlueApp
+            # docker run -d -p 8000:80 blueapp
+            # if docker ps | grep 'blueapp'
+            # then
+              # echo 'Docker works fine'
+            # else
+              # echo 'Docker test failed'
+              # exit 1
+            # fi
+      # - run:
+          # name: upload docker image
+          # command: |
+            # cd BlueApp
+            # echo $docker_password | docker login -u $docker_username --password-stdin 
+            # docker tag blueapp svk100/blueapp
+            # docker container ls
+            # docker push svk100/blueapp
 
   build-eks-cluster:
     docker:
@@ -183,7 +183,7 @@ jobs:
           name: Update EKS Cluster
           command: |
             aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
-            kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp
+            kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp:latest
             kubectl rollout status deployment/udacity-capstone
             kubectl rollout history deployment/udacity-capstone
             kubectl get rs
