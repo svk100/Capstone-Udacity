@@ -183,6 +183,10 @@ jobs:
           name: Update EKS Cluster
           command: |
             aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
+            kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp
+            kubectl rollout status deployment/udacity-capstone
+            kubectl rollout history deployment/udacity-capstone
+            kubectl get rs
 
   test-deployment:
     docker: 
@@ -241,4 +245,5 @@ workflows:
     when: << pipeline.parameters.blue_BD >>
     jobs:
       - build-dockerB-image
-      
+      - update-eks-cluster:
+        requires: build-dockerB-image
