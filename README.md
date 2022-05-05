@@ -13,12 +13,12 @@ In this project you will apply the skills and knowledge which were developed thr
 * Building Docker containers in pipelines
 
 ## Overview
-	- I'm deploying a dockerized python app, called greenapp to a AWS EKS Cluster.
-	- I'll be using Cloudformation, circleci, docker hub, Amazon EKS
-	- I'll be updating the docker image to blueapp using rolling deployment
-	- I've highlighted the loadbalancer url in the screenshots to show the same cluster getting updated to a new image
-	   Screenshots 
-		[4.3](Screenshots/4.3 LoadBalancer_Created.JPG)
+* I'm deploying a dockerized python app, called greenapp to a AWS EKS Cluster.
+* I'll be using Cloudformation, circleci, docker hub, Amazon EKS
+* I'll be updating the docker image to blueapp using rolling deployment
+* I've highlighted the loadbalancer url in the screenshots to show the same cluster getting updated to a new image
+	Screenshots 
+	[4.3](Screenshots/4.3 LoadBalancer_Created.JPG)
 		, 5.3 and 7.3
 
 ## Requirements
