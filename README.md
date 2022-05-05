@@ -12,7 +12,7 @@ In this project you will apply the skills and knowledge which were developed thr
 * Building Kubernetes clusters
 * Building Docker containers in pipelines
 
-## Overview: 
+## Overview
 	- I'm deploying a dockerized python app, called greenapp to a AWS EKS Cluster.
 	- I'll be using Cloudformation, circleci, docker hub, Amazon EKS
 	- I'll be updating the docker image to blueapp using rolling deployment
