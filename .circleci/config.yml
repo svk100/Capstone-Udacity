@@ -220,6 +220,8 @@ jobs:
             kubectl get nodes
             kubectl get deployment
             kubectl get pod
+            kubectl get pods
+            kubectl get pods
 
       - run:
           name: Test deployment
