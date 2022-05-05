@@ -246,4 +246,4 @@ workflows:
     jobs:
       - build-dockerB-image
       - update-eks-cluster:
-        requires: build-dockerB-image
+        requires: [build-dockerB-image]
