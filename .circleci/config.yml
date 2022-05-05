@@ -183,8 +183,10 @@ jobs:
           name: Update EKS Cluster
           command: |
             aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name udacity-capstone
-            kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp:latest
-            kubectl rollout status deployment/udacity-capstone
+            docker pull svk100/blueapp:latest
+            docker image ls
+            #kubectl set image deployment/udacity-capstone udacity-capstone=svk100/blueapp:latest
+            #kubectl rollout status deployment/udacity-capstone
             kubectl rollout history deployment/udacity-capstone
             kubectl get rs
 
